@@ -59,3 +59,37 @@ pub fn demo_trait_associated_type(){
     println!("A baby dog is called a {}", <Dog as Animal>::baby_name());
     
 }
+
+pub fn demo_super_trait(){
+    
+    use std::fmt;
+    trait OutlinePrint: fmt::Display {
+        fn outline_print(&self) {
+            let output = self.to_string();
+            let len = output.len();
+            println!("{}", "*".repeat(len + 4));
+            println!("*{}*", " ".repeat(len + 2));
+            println!("* {} *", output);
+            println!("*{}*", " ".repeat(len + 2));
+            println!("{}", "*".repeat(len + 4));
+        }
+    }
+
+    #[derive(Debug)]    
+    struct Point {
+        x: i32,
+        y: i32,
+    }
+    
+    impl OutlinePrint for Point {}
+
+    impl fmt::Display for Point{
+
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            write!(f, "({}, {})", self.x, self.y)
+       }
+    }
+
+    let p = Point{x:3,y:6};
+    p.outline_print();
+}
